@@ -18,10 +18,7 @@ class DragButton(QPushButton):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton and self.dragging:
             self.dragging = False
-            delta = event.pos() - self.old_pos
-            self.move(self.pos() + delta)
-            self.parent().update_bounding_box(self, delta)
-            self.parent().update()
+            self.parent().button_move(self, self.old_pos.x(), self.old_pos.y(), event.pos().x(), event.pos().y())
 
 
     

@@ -1,0 +1,2 @@
+本项目的源码在src目录下，可执行文件为dist/my_project/my_project.exe文件。
+该项目为python项目，构建项目所需的依赖库为PyQt5，为构建项目，需要安装此依赖库。

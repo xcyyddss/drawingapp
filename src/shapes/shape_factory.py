@@ -1,9 +1,9 @@
 #使用工厂模式，根据需求创建不同的图形对象。
-from .triangle import Triangle
-from .rectangle import Rectangle
-from .ellipse import Ellipse
-from .circle import Circle
-from .line import Line
+from src.shapes.triangle import Triangle
+from src.shapes.rectangle import Rectangle
+from src.shapes.ellipse import Ellipse
+from src.shapes.circle import Circle
+from src.shapes.line import Line
 
 class ShapeFactory:
     @staticmethod

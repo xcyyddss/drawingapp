@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QAction, QFileDialog, QMessageBox
-from .shape_canvas import ShapeCanvas
-from .toolbar_panel import ToolbarPanel
+from src.ui.shape_canvas import ShapeCanvas
+from src.ui.toolbar_panel import ToolbarPanel
 from PyQt5.QtGui import QIcon
 
 class MainWindow(QMainWindow):
@@ -18,13 +18,14 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
 
-        # 创建工具栏
-        self.toolbar = ToolbarPanel(self)
-        self.addToolBar(self.toolbar)
 
         # 创建绘图区域
         self.canvas = ShapeCanvas()
         layout.addWidget(self.canvas)
+
+        # 创建工具栏
+        self.toolbar = ToolbarPanel(self)
+        self.addToolBar(self.toolbar)
 
         # 创建菜单栏
         menubar = self.menuBar()
@@ -50,19 +51,11 @@ class MainWindow(QMainWindow):
         view_menu.addAction(personalize_action)
 
     def save_drawing(self):
-        options = QFileDialog.Options()
-        file_name, _ = QFileDialog.getSaveFileName(self, "Save Drawing", "", "All Files (*);;PNG Files (*.png)", options=options)
-        if file_name:
-            # 调用绘图区域的保存方法
-            self.canvas.save_drawing(file_name)
+        QMessageBox.information(self, "Save", "Not implemented.")
 
     def load_drawing(self):
-        options = QFileDialog.Options()
-        file_name, _ = QFileDialog.getOpenFileName(self, "Load Drawing", "", "All Files (*);;PNG Files (*.png)", options=options)
-        if file_name:
-            # 调用绘图区域的加载方法
-            self.canvas.load_drawing(file_name)
+        QMessageBox.information(self, "Load", "Not implemented.")
 
     def personalize_interface(self):
         # 打开个性化界面的设置窗口
-        QMessageBox.information(self, "Personalize", "Personalize interface settings will be implemented here.")
+        QMessageBox.information(self, "Personalize", "Not implemented.")

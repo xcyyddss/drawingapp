@@ -1,15 +1,13 @@
 #实现组合模式，用于图形的组合。
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QPainter, QPen
-from PyQt5.QtCore import Qt, QPoint, QRect
-from ..components.drag_button import DragButton
 
-class Component(QWidget):
-    def __init__(self, shape, parent=None):
-        super().__init__(parent)
-        self.children_shapes = [shape]
+class Component:
+    def __init__(self, shape = None):
+        self.type = "component"
+        if not shape:
+            self.children_shapes = []
+        else:
+            self.children_shapes = [shape]
         self.drag_buttons = []
-        self.setGeometry(shape.bounding_box()[0], shape.bounding_box()[1], shape.bounding_box()[2], shape.bounding_box()[3])
 
     def add(self, child):
         self.children_shapes.append(child)
@@ -34,64 +32,23 @@ class Component(QWidget):
             x = min(x, _x)
             y = min(y, _y)
         return (x, y, width-x, height-y)
+    
+    def inter_box(self, x, y):
+        _x,_y,w,h = self.bounding_box()
+        if x > _x and x < _x+w and y > _y and y < _y+h:
+            return True
+        return False
 
     def clone(self):
-        clone_component = Component(None, self.parent())
+        clone_component = Component()
         for child in self.children_shapes:
             clone_component.add(child.clone())
         return clone_component
 
-    def mousePressEvent(self, event):
-        x,y,w,h = self.bounding_box()
-        if event.button() == Qt.LeftButton:
-            if event.x() > x and event.x() < x+w and event.y() > y and event.y() < y+h:
-                print("mousePressEvent")
-                self.create_drag_buttons()
-                self.update()
-            else:
-                for button in self.drag_buttons:
-                    button.hide()
-                self.drag_buttons = []
-                self.update()
-
-    def create_drag_buttons(self):
-        for button in self.drag_buttons:
-            button.deleteLater()
-        self.drag_buttons = []
-        rect = self.bounding_box()
-        # 创建四个拖拽按钮
-        self.drag_buttons.append(DragButton(self, rect[0] - 15, rect[1] - 15))
-        self.drag_buttons.append(DragButton(self, rect[0]+rect[2] - 15, rect[1]+rect[3] - 15))
-        for button in self.drag_buttons:
-            button.show()
-
-    def update_bounding_box(self, button, delta):
-        x,y,w,h = self.bounding_box()
-        idx = self.drag_buttons.index(button)
-        if idx == 0:
-            x += delta.x()
-            y += delta.y()
-            self.drag_buttons[1].move(self.drag_buttons[1].pos() + delta)
-            for child in self.children_shapes:
-                child.move(delta.x(), delta.y())
-        elif idx == 1:
-            for child in self.children_shapes:
-                child.zoom((w + delta.x())/w, (h + delta.y())/h)
-            w += delta.x()
-            h += delta.y()
-        self.setGeometry(x,y,w,h)
-        self.update()
-
     def move(self, dx, dy):
         for child in self.children_shapes:
             child.move(dx, dy)
-        x,y,w,h = self.bounding_box()
-        self.setGeometry(x,y,w,h)
-        self.update()
 
-    def zoom(self, factor1, factor2):
+    def zoom(self, _x, _y, factor1, factor2):
         for child in self.children_shapes:
-            child.zoom(factor1, factor2)
-        x,y,w,h = self.bounding_box()
-        self.setGeometry(x,y,w,h)
-        self.update()
+            child.zoom(_x, _y, factor1, factor2)

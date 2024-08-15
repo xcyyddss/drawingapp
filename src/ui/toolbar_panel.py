@@ -22,6 +22,11 @@ class ToolbarPanel(QToolBar):
         text_action.triggered.connect(self.add_text)
         self.addAction(text_action)
 
+        # 选择按钮
+        select_action = QAction(QIcon("resources/icons/select.png"), "选择组合成分", self)
+        select_action.triggered.connect(self.select_shape)
+        self.addAction(select_action)
+
         # 组合按钮
         group_action = QAction(QIcon("resources/icons/group.png"), "组合", self)
         group_action.triggered.connect(self.group_shapes)
@@ -54,27 +59,38 @@ class ToolbarPanel(QToolBar):
 
     def add_text(self):
         # 实现添加文本框的逻辑
-        QMessageBox.information(self, "文本框", "添加文本框功能未实现。")
+        self.parent().canvas.clear_button()
+        self.parent().canvas.set_text()
+
+    def select_shape(self):
+        # 实现选择图形的逻辑
+        self.parent().canvas.clear_button()
+        self.parent().canvas.set_select()
 
     def group_shapes(self):
         # 实现组合图形的逻辑
-        QMessageBox.information(self, "组合", "组合图形功能未实现。")
+        self.parent().canvas.clear_button()
+        self.parent().canvas.composite()
 
     def copy_shape(self):
         # 实现复制图形的逻辑
-        QMessageBox.information(self, "复制", "复制图形功能未实现。")
+        self.parent().canvas.clear_button()
+        self.parent().canvas.copy()
 
     def paste_shape(self):
         # 实现粘贴图形的逻辑
-        QMessageBox.information(self, "粘贴", "粘贴图形功能未实现。")
+        self.parent().canvas.clear_button()
+        self.parent().canvas.paste()
 
     def undo_action(self):
         # 实现撤销操作的逻辑
-        QMessageBox.information(self, "撤销", "撤销操作功能未实现。")
+        self.parent().canvas.clear_button()
+        self.parent().canvas.undo()
 
     def redo_action(self):
         # 实现重做操作的逻辑
-        QMessageBox.information(self, "重做", "重做操作功能未实现。")
+        self.parent().canvas.clear_button()
+        self.parent().canvas.redo()
 
     def save_drawing(self):
         # 实现保存绘图的逻辑
